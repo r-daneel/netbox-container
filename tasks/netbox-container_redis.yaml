@@ -1,0 +1,43 @@
+---
+
+################################################################################
+# Redis (task queue)
+################################################################################
+
+- name: Run Redis (task queue) container
+  docker_container:
+    name: "{{ netbox_container_redis_container_name }}"
+    image: "{{ netbox_container_redis_image }}"
+    state: started
+    restart_policy: "{{ netbox_container_redis_restart_policy }}"
+    env: "{{ netbox_container_redis_env_vars }}"
+    volumes:
+      - "{{ netbox_container_redis_data_dir }}:/data"
+    networks:
+      - name: "{{ netbox_container_netbox_network_name }}"
+    healthcheck:
+      test: ["CMD-SHELL", "[ $(valkey-cli --pass \"${REDIS_PASSWORD}\" ping) = 'PONG' ]"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+################################################################################
+# Redis-cache (cache)
+################################################################################
+
+- name: Run Redis-cache container
+  docker_container:
+    name: "{{ netbox_container_redis_cache_container_name }}"
+    image: "{{ netbox_container_redis_cache_image }}"
+    state: started
+    restart_policy: "{{ netbox_container_redis_cache_restart_policy }}"
+    env: "{{ netbox_container_redis_cache_env_vars }}"
+    volumes:
+      - "{{ netbox_container_redis_cache_data_dir }}:/data"
+    networks:
+      - name: "{{ netbox_container_netbox_network_name }}"
+    healthcheck:
+      test: ["CMD-SHELL", "[ $(valkey-cli --pass \"${REDIS_PASSWORD}\" ping) = 'PONG' ]"]
+      interval: 5s
+      timeout: 3s
+      retries: 5

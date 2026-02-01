@@ -1,0 +1,43 @@
+---
+
+################################################################################
+# NetBox main app
+################################################################################
+
+- name: Run NetBox web container
+  docker_container:
+    name: "{{ netbox_container_netbox_container_name }}"
+    image: "{{ netbox_container_netbox_image }}:{{ netbox_container_netbox_version }}"
+    state: started
+    restart_policy: "{{ netbox_container_netbox_restart_policy }}"
+    env: "{{ netbox_container_netbox_env_vars }}"
+    volumes:
+      - "{{ netbox_container_netbox_media_dir }}:/opt/netbox/netbox/media:rw"
+      - "{{ netbox_container_netbox_reports_dir }}:/opt/netbox/netbox/reports:rw"
+      - "{{ netbox_container_netbox_scripts_dir }}:/opt/netbox/netbox/scripts:rw"
+    networks: "{{ _netbox_container_networks }}"
+    published_ports: "{{ _netbox_container_published_ports | default(omit, true) }}"
+    healthcheck:
+      test: ["CMD", "curl -f http://localhost:8080/login/ || exit 1"]
+      interval: 15s
+      timeout: 3s
+      retries: 8
+      start_period: 90s
+
+################################################################################
+# NetBox worker
+################################################################################
+
+- name: Run NetBox worker container
+  docker_container:
+    name: "{{ netbox_container_netbox_worker_container_name }}"
+    image: "{{ netbox_container_netbox_worker_image }}:{{ netbox_container_netbox_worker_version }}"
+    state: started
+    restart_policy: "{{ netbox_container_netbox_worker_restart_policy }}"
+    env: "{{ netbox_container_netbox_worker_env_vars }}"
+    command:
+      - "/opt/netbox/venv/bin/python"
+      - "/opt/netbox/netbox/manage.py"
+      - "rqworker"
+    networks:
+      - name: "{{ netbox_container_netbox_network_name }}"

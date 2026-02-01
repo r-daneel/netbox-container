@@ -1,0 +1,26 @@
+---
+
+- name: Pre-flight checks
+  include_tasks: netbox-container_preflight_checks.yaml
+  tags:
+    - netbox-container_preflight_checks
+
+- name: Setup network
+  include_tasks: netbox-container_network.yaml
+  tags:
+    - netbox-container_network
+
+- name: Setup Database
+  include_tasks: netbox-container_database.yaml
+  tags:
+    - netbox-container_database
+
+- name: Setup Redis
+  include_tasks: netbox-container_redis.yaml
+  tags:
+    - netbox-container_redis
+
+- name: Setup netbox
+  include_tasks: netbox-container_netbox.yaml
+  tags:
+    - netbox-container_netbox

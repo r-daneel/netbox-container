@@ -1,0 +1,7 @@
+---
+
+- name: Ensure networks for NetBox exists
+  docker_network:
+    name: "{{ item.name }}"
+    state: present
+  loop: "{{ _netbox_container_networks }}"

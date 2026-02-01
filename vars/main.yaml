@@ -1,0 +1,53 @@
+---
+
+# rather static information
+netbox_container_service_port: '8080'
+
+netbox_container_netbox_env_vars:
+  API_TOKEN_PEPPER_1: "{{ netbox_container_netbox_api_pepper }}"
+  CORS_ORIGIN_ALLOW_ALL: 'True'
+  DB_HOST: "{{ netbox_container_postgres_container_name }}"
+  DB_NAME: "{{ netbox_container_postgres_db_name }}"
+  DB_USER: "{{ netbox_container_postgres_user }}"
+  DB_PASSWORD: "{{ netbox_container_postgres_password }}"
+  EMAIL_FROM: 'netbox@bar.com'
+  EMAIL_PASSWORD: ''
+  EMAIL_PORT: '25'
+  EMAIL_SERVER: 'localhost'
+  EMAIL_SSL_CERTFILE: ''
+  EMAIL_SSL_KEYFILE: ''
+  EMAIL_TIMEOUT: '5'
+  EMAIL_USERNAME: 'netbox'
+  # EMAIL_USE_SSL and EMAIL_USE_TLS are mutually exclusive, i.e. they can't both be `true`!
+  EMAIL_USE_SSL: 'false'
+  EMAIL_USE_TLS: 'false'
+  GRAPHQL_ENABLED: 'true'
+  MEDIA_ROOT: '/opt/netbox/netbox/media'
+  METRICS_ENABLED: 'false'
+  REDIS_CACHE_DATABASE: '1'
+  REDIS_CACHE_HOST: "{{ netbox_container_redis_cache_container_name }}"
+  REDIS_CACHE_INSECURE_SKIP_TLS_VERIFY: 'false'
+  REDIS_CACHE_PASSWORD: "{{ netbox_container_redis_cache_password }}"
+  REDIS_CACHE_SSL: 'false'
+  REDIS_DATABASE: '0'
+  REDIS_HOST: "{{ netbox_container_redis_container_name }}"
+  REDIS_INSECURE_SKIP_TLS_VERIFY: 'false'
+  REDIS_PASSWORD: "{{ netbox_container_redis_password }}"
+  REDIS_SSL: 'false'
+  RELEASE_CHECK_URL: 'https://api.github.com/repos/netbox-community/netbox/releases'
+  SECRET_KEY: "{{ netbox_container_netbox_secret_key }}"
+  SKIP_SUPERUSER: 'true'
+  WEBHOOKS_ENABLED: 'true'
+
+netbox_container_netbox_worker_env_vars: "{{ netbox_container_netbox_env_vars }}"
+
+netbox_container_postgres_env_vars:
+  POSTGRES_DB: "{{ netbox_container_postgres_db_name }}"
+  POSTGRES_PASSWORD: '{{ netbox_container_postgres_password }}'
+  POSTGRES_USER: '{{ netbox_container_postgres_user }}'
+
+netbox_container_redis_env_vars:
+  VALKEY_EXTRA_FLAGS: "--requirepass {{ netbox_container_redis_password }} --appendonly yes"
+
+netbox_container_redis_cache_env_vars:
+  VALKEY_EXTRA_FLAGS: "--requirepass {{ netbox_container_redis_cache_password }}"

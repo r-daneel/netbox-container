@@ -1,0 +1,51 @@
+---
+
+- name: Preflight checks - network
+  assert:
+    that:
+      - netbox_container_netbox_network_name != ''
+    quiet: true
+
+- name: Build networks list
+  set_fact:
+    _netbox_container_networks: "{{ ( _netbox_container_networks | default([]) ) + [ { 'name': item } ] }}"
+  when:
+    - item != ''
+  loop:
+    - "{{ netbox_container_netbox_network_name }}"
+    - "{{ netbox_container_network_name }}"
+
+- name: Set published port
+  set_fact:
+    _netbox_container_published_ports: "{{ netbox_container_netbox_exposed_port }}:{{ netbox_container_service_port }}"
+  when:
+    - netbox_container_netbox_exposed_port != ''
+
+# - name: Preflight checks
+#   assert:
+#     that:
+#       - netbox_container_app_name != ''
+#       - netbox_container_app_admin_username != ''
+#       - netbox_container_app_admin_password != ''
+#     quiet: true
+
+# - name: Preflight checks
+#   assert:
+#     that:
+#       - netbox_container_app_image_name != ''
+#       - netbox_container_app_image_tag != ''
+#     quiet: true
+#   when:
+#     - netbox_container_app_image_id == ''
+
+- name: Ensure required directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ netbox_container_netbox_media_dir }}"
+    - "{{ netbox_container_netbox_reports_dir }}"
+    - "{{ netbox_container_netbox_scripts_dir }}"
+    - "{{ netbox_container_postgres_data_dir }}"
+    - "{{ netbox_container_redis_data_dir }}"
+    - "{{ netbox_container_redis_cache_data_dir }}"
