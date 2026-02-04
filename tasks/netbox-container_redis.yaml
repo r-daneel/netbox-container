@@ -16,7 +16,9 @@
     networks:
       - name: "{{ netbox_container_netbox_network_name }}"
     healthcheck:
-      test: ["CMD-SHELL", "[ $(valkey-cli --pass \"${REDIS_PASSWORD}\" ping) = 'PONG' ]"]
+      test:
+        - "CMD-SHELL"
+        - "test $(valkey-cli --pass \"${REDIS_PASSWORD}\" ping) = 'PONG'"
       interval: 5s
       timeout: 3s
       retries: 5
@@ -37,7 +39,9 @@
     networks:
       - name: "{{ netbox_container_netbox_network_name }}"
     healthcheck:
-      test: ["CMD-SHELL", "[ $(valkey-cli --pass \"${REDIS_PASSWORD}\" ping) = 'PONG' ]"]
+      test:
+        - "CMD-SHELL"
+        - "test $(valkey-cli --pass \"${REDIS_PASSWORD}\" ping) = 'PONG'"
       interval: 5s
       timeout: 3s
       retries: 5

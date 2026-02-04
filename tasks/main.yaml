@@ -1,7 +1,7 @@
 ---
 
 - name: Pre-flight checks
-  include_tasks: netbox-container_preflight_checks.yaml
+  include_tasks: netbox-container_preflight-checks.yaml
   tags:
     - netbox-container_preflight_checks
 

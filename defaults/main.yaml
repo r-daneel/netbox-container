@@ -1,26 +1,39 @@
 ---
 
+#
 # Images & versions
+#
+
+# netbox
 netbox_container_netbox_image: "docker.io/netboxcommunity/netbox"
 netbox_container_netbox_version: "v4.4-3.4.1"
 
-netbox_container_netbox_worker_image: "{{ netbox_container_netbox_image   }}"
-netbox_container_netbox_worker_version: "{{ netbox_container_netbox_version   }}"
+# netbox worker
+netbox_container_netbox_worker_image: "{{ netbox_container_netbox_image }}"
+netbox_container_netbox_worker_version: "{{ netbox_container_netbox_version }}"
 
+# postgres database
 netbox_container_postgres_container_image: "docker.io/postgres:17-alpine"
+
+# redis
 netbox_container_redis_image: "docker.io/valkey/valkey:8.1-alpine"
 netbox_container_redis_cache_image: "docker.io/valkey/valkey:8.1-alpine"
 
-netbox_container_postgres_db_name: "netbox"
 
+#
 # Container names
+#
+
 netbox_container_netbox_container_name: "netbox"
 netbox_container_netbox_worker_container_name: "netbox-worker"
 netbox_container_postgres_container_name: "netbox-postgres"
 netbox_container_redis_container_name: "netbox-redis"
 netbox_container_redis_cache_container_name: "netbox-redis-cache"
 
+#
 # Volumes on host
+#
+
 netbox_container_base_dir: "/data/{{ netbox_container_netbox_container_name }}"
 netbox_container_netbox_media_dir: "{{ netbox_container_base_dir }}/media"
 netbox_container_netbox_reports_dir: "{{ netbox_container_base_dir }}/reports"
@@ -29,7 +42,10 @@ netbox_container_postgres_data_dir: "{{ netbox_container_base_dir }}/postgres-da
 netbox_container_redis_data_dir: "{{ netbox_container_base_dir }}/redis-data"
 netbox_container_redis_cache_data_dir: "{{ netbox_container_base_dir }}/redis-cache-data"
 
+#
 # Secrets
+#
+
 netbox_container_postgres_user: ''
 netbox_container_postgres_password: ''
 netbox_container_redis_password: ''
@@ -41,7 +57,7 @@ netbox_container_netbox_secret_key: ''
 # Networks
 #
 
-# Intenral network is used by the group of containers for
+# Internal network is used by the group of containers for
 # private communication (database, redis cache)
 netbox_container_netbox_network_name: "netbox_network"
 
@@ -61,6 +77,8 @@ netbox_container_netbox_exposed_port: '80'
 
 netbox_container_timezone: 'Etc/UTC'
 
+netbox_container_postgres_db_name: 'netbox'
+
 # Set this to 'true' to force pulling of docker images
 netbox_container_update: false
 netbox_container_container_update: "{{ netbox_container_update }}"
@@ -69,3 +87,12 @@ netbox_container_redis_container_update: "{{ netbox_container_update }}"
 netbox_container_redis_cache_container_update: "{{ netbox_container_update }}"
 netbox_container_netbox_container_update: "{{ netbox_container_update }}"
 netbox_container_netbox_worker_container_update: "{{ netbox_container_update }}"
+
+netbox_container_smtp_host: ''
+netbox_container_smtp_from: 'netbox@localhost'
+netbox_container_smtp_from_name: 'netbox'
+netbox_container_smtp_username: ''
+netbox_container_smtp_password: ''
+netbox_container_smtp_timeout: '15'
+netbox_container_smtp_security: 'false'
+netbox_container_smtp_port: '25'
