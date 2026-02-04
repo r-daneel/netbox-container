@@ -10,17 +10,17 @@ netbox_container_netbox_env_vars:
   DB_NAME: "{{ netbox_container_postgres_db_name }}"
   DB_USER: "{{ netbox_container_postgres_user }}"
   DB_PASSWORD: "{{ netbox_container_postgres_password }}"
-  EMAIL_FROM: 'netbox@bar.com'
-  EMAIL_PASSWORD: ''
-  EMAIL_PORT: '25'
-  EMAIL_SERVER: 'localhost'
-  EMAIL_SSL_CERTFILE: ''
-  EMAIL_SSL_KEYFILE: ''
-  EMAIL_TIMEOUT: '5'
-  EMAIL_USERNAME: 'netbox'
+  EMAIL_FROM: "{{ netbox_container_smtp_from }}"
+  EMAIL_PASSWORD: "{{ netbox_container_smtp_password }}"
+  EMAIL_PORT: "{{ netbox_container_smtp_port }}"
+  EMAIL_SERVER: "{{ netbox_container_smtp_host }}"
+  EMAIL_SSL_CERTFILE: '' #TODO
+  EMAIL_SSL_KEYFILE: '' #TODO
+  EMAIL_TIMEOUT: "{{ netbox_container_smtp_timeout }}"
+  EMAIL_USERNAME: "{{ netbox_container_smtp_username }}"
   # EMAIL_USE_SSL and EMAIL_USE_TLS are mutually exclusive, i.e. they can't both be `true`!
-  EMAIL_USE_SSL: 'false'
-  EMAIL_USE_TLS: 'false'
+  EMAIL_USE_SSL: "{{ netbox_container_smtp_security }}"
+  EMAIL_USE_TLS: "{{ netbox_container_smtp_security }}"
   GRAPHQL_ENABLED: 'true'
   MEDIA_ROOT: '/opt/netbox/netbox/media'
   METRICS_ENABLED: 'false'
@@ -47,7 +47,9 @@ netbox_container_postgres_env_vars:
   POSTGRES_USER: '{{ netbox_container_postgres_user }}'
 
 netbox_container_redis_env_vars:
+  REDIS_PASSWORD: "{{ netbox_container_redis_password }}" # needed for healthchecks
   VALKEY_EXTRA_FLAGS: "--requirepass {{ netbox_container_redis_password }} --appendonly yes"
 
 netbox_container_redis_cache_env_vars:
+  REDIS_PASSWORD: "{{ netbox_container_redis_cache_password }}" # needed for healthchecks
   VALKEY_EXTRA_FLAGS: "--requirepass {{ netbox_container_redis_cache_password }}"

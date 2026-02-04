@@ -1,5 +1,14 @@
 ---
 
+- name: Build networks list
+  set_fact:
+    _netbox_container_networks: "{{ ( _netbox_container_networks | default([]) ) + [ { 'name': item } ] }}"
+  when:
+    - item != ''
+  loop:
+    - "{{ netbox_container_netbox_network_name }}"
+    - "{{ netbox_container_network_name }}"
+
 - name: Ensure networks for NetBox exists
   docker_network:
     name: "{{ item.name }}"

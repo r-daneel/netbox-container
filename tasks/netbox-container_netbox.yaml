@@ -18,11 +18,15 @@
     networks: "{{ _netbox_container_networks }}"
     published_ports: "{{ _netbox_container_published_ports | default(omit, true) }}"
     healthcheck:
-      test: ["CMD", "curl -f http://localhost:8080/login/ || exit 1"]
-      interval: 15s
-      timeout: 3s
+      test:
+        - "CMD-SHELL"
+        - "curl -f -s -S {{ __check_url }} | grep 'data-netbox-version'"
+      interval: 60s
+      timeout: 5s
       retries: 8
       start_period: 90s
+  vars:
+    __check_url: "http://localhost:{{ netbox_container_service_port }}/login/"
 
 ################################################################################
 # NetBox worker
